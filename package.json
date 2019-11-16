@@ -1,0 +1,32 @@
+{
+  "name": "oriendpoint",
+  "version": "0.0.1",
+  "description": "origami core endpoint",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vahidHossaini/oriendpoint.git"
+  },
+  "keywords": [
+    "origami",
+    "endpoint",
+    "express",
+    "socket"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vahidHossaini/oriendpoint/issues"
+  },
+  "homepage": "https://github.com/vahidHossaini/oriendpoint#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "formidable": "^1.2.1",
+    "url": "^0.11.0",
+    "uuid": "^3.3.3"
+  }
+}
