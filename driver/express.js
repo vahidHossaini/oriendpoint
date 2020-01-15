@@ -23,20 +23,27 @@ module.exports = class oriExpress
             var data = this.reqToDomain(config,req,self,res) 
             if(!data)
                 return
+			var session =req.session;
+			
             if(config.authz)
             { 
-                let isAuthz =await self.checkAuthz(session,data,dist,config.authz)
+				let isAuthz = false;
+				try{
+					isAuthz =await self.checkAuthz(session,data,dist,config.authz)
+					
+				}catch(exp)
+				{
+					console.log('----',exp)
+				}
                 if(!isAuthz) 
-                    return self.sendData(self,res,200,{m:'glb002'}) 
+                    return self.sendData(self,res,200,{m:'endpoint002'}) 
             }
-			var upload=this.checkUpload(data,self)
+			var upload=await this.checkUpload(req,data,self)
 			if(!upload)
-				return self.sendData(self,res,200,{m:'glb004'})
+				return self.sendData(self,res,200,{m:'endpoint004'})
 			try{
                 var dd=await dist.run(data.domain,data.service,data.body)
-				var token= await this.setSession(req,dd);
-				if(token)
-					data.token=token;
+				var token= await this.setSession(req,dd,self);
 
                 if(dd && dd.redirect) 
                     return res.redirect(dd.redirect) 
@@ -60,7 +67,10 @@ module.exports = class oriExpress
                     this.getStream(dd.streamFileDownload,dd.type,res,req)
                     return
                 } 
-              return self.sendData(self,res,200,{isDone:true,data:dd})
+				var resp={isDone:true,data:dd}
+				if(token)
+					resp.token=token;
+              return self.sendData(self,res,200,resp)
 			}
 			catch(exp)
 			{
@@ -69,10 +79,13 @@ module.exports = class oriExpress
 			}
 		});
 	}
-	async setSession(req,data)
+	async setSession(req,data,self)
 	{
+		if(!global.sessionManager)
+			return
 		var token = req.header('authorization') 
 		var dtx=req.session
+		
 		if(data.session)
 		{
             if(!dtx)
@@ -86,18 +99,19 @@ module.exports = class oriExpress
                 }
             }
             delete data.session
-			var key= await global.sessionManager.set(config.sessionManager,token,dtx)
+			var key= await global.sessionManager.set(self.config.sessionManager,token,dtx) 
 			return key;
 		}
 		return "";
 	}
-	async checkUpload(data,self)
+	async checkUpload(req,data,self)
 	{
 		if(global.upload && global.upload[data.domain] && global.upload[data.domain][data.service])
 		{
 			var up = global.upload[data.domain][data.service];
 			try{ 
 				data.body.$uploadedFile = await self.getUploadFile(req,up)
+				console.log('---------------------------------',data.body.$uploadedFile)
 			}
 			catch(exp){ 
 				console.log(exp)
@@ -110,12 +124,12 @@ module.exports = class oriExpress
 	{
         return new Promise(async(res,rej)=>{    
 			var form = new formidable.IncomingForm();
-			console.log('3-----',form)
+			//console.log('3-----',form)
 			if(data.max)
 				form.maxFileSize =data.max
 			form.parse(req, function (err, fields, files) {
 			//console.log('3-----',files.path)
-			console.log('3-----',files)
+			//console.log('3-----',files)
 			//form.maxFieldsSize
 				
 				if(err )
@@ -178,7 +192,7 @@ module.exports = class oriExpress
         var seperate = url_parts.pathname.split('/')
         if(!seperate || seperate.length!=3)
         {
-            self.sendData(self,res,200,{m:'glb001'})
+            self.sendData(self,res,200,{m:'endpoint001'})
             return
         }  
         var rt={
@@ -287,9 +301,11 @@ module.exports = class oriExpress
     }
 	setSessionManager(app,config)
 	{ 
+		if(!global.sessionManager)
+			return; 
 		app.use(function (req, res, next){
             var token = req.header('authorization')
-			global.sessionManager.get(config.sessionManager,token).then((data)=>{
+			global.sessionManager.get(config.sessionManager,token).then((data)=>{ 
 				req.session=data;
 				next();
 			}).catch(()=>{

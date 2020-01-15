@@ -1,32 +1,52 @@
 {
-  "name": "oriendpoint",
-  "version": "0.0.1",
+  "_from": "oriendpoint",
+  "_id": "oriendpoint@0.0.9",
+  "_inBundle": false,
+  "_integrity": "sha512-yG36v48Jx2ZTYHSWVelZ99LuHurQ1sn72PpaBiwpyFn3Q+i1FuXAkfGn3FGfgVbQyLugGgfrYawz1OL+VOBp7w==",
+  "_location": "/oriendpoint",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "oriendpoint",
+    "name": "oriendpoint",
+    "escapedName": "oriendpoint",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/oriendpoint/-/oriendpoint-0.0.9.tgz",
+  "_shasum": "8a1f75d0c625be4e75138b24c66f2ed92d187b92",
+  "_spec": "oriendpoint",
+  "_where": "C:\\publish\\ala_server",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/vahidHossaini/oriendpoint/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
   "description": "origami core endpoint",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vahidHossaini/oriendpoint.git"
-  },
+  "homepage": "https://github.com/vahidHossaini/oriendpoint#readme",
   "keywords": [
     "origami",
     "endpoint",
     "express",
     "socket"
   ],
-  "author": "",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/vahidHossaini/oriendpoint/issues"
+  "main": "index.js",
+  "name": "oriendpoint",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vahidHossaini/oriendpoint.git"
   },
-  "homepage": "https://github.com/vahidHossaini/oriendpoint#readme",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "formidable": "^1.2.1",
-    "url": "^0.11.0",
-    "uuid": "^3.3.3"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.11"
 }
